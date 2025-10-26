@@ -40,6 +40,8 @@ grafana:
           type: prometheus
           url: http://{{ .Release.Name }}-mimir-nginx/prometheus
           isDefault: true
+          jsonData:
+            timeInterval: "60s"
         - name: Tempo
           uid: tempo
           type: tempo
