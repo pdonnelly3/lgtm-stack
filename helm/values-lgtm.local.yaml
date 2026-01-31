@@ -255,7 +255,7 @@ mimir:
         memory: 64Mi
   minio:
     enabled: true
-    existingSecret: lgtm-minio-credentials
+    existingSecret: lgtm-minio
     replicas: 1
     resources:
       requests:
