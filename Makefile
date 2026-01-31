@@ -68,6 +68,8 @@ setup-repos: check-prereqs
 	@echo "✅ Repositories configured"
 
 install-local: setup-repos ## Install LGTM stack for local development
+	@echo "$(BLUE)Creating MinIO secret...$(RESET)"
+	kubectl apply -f manifests/minio-secret.yaml
 	@echo "$(BLUE)Installing LGTM stack locally...$(RESET)"
 	helm install prometheus-operator --version 81.3.1 -n monitoring \
 		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml >/dev/null
@@ -116,8 +118,6 @@ install-gcp: setup-repos check-gcp ## Install LGTM stack in GCP
 
 install-deps: ## Install dependencies (promtail & dashboards)
 	@echo "$(BLUE)Installing dependencies...$(RESET)"
-	@echo "$(BLUE)Creating MinIO secret...$(RESET)"
-	kubectl apply -f manifests/minio-secret.yaml
 	@echo "$(BLUE)Installing Promtail for $(RUNTIME) runtime...$(RESET)"
 	@if [ "$(RUNTIME)" = "cri" ]; then \
 		kubectl apply -f manifests/promtail.cri.yaml ; \
