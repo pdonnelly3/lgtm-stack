@@ -34,7 +34,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: flask-app
-        image: david13356/flask-app-lgtm:v1.0.0
+        image: david13356/flask-app-lgtm:latest
         imagePullPolicy: Always
         env:
         - name: PORT
