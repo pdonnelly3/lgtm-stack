@@ -299,12 +299,12 @@ tempo:
         cpu: 100m
         memory: 128Mi
     extraEnv:
-    - name: S3_ACCESS_KEY
+    - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
           key: rootUser
-    - name: S3_SECRET_KEY
+    - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
@@ -321,12 +321,12 @@ tempo:
         cpu: 200m
         memory: 384Mi
     extraEnv:
-    - name: S3_ACCESS_KEY
+    - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
           key: rootUser
-    - name: S3_SECRET_KEY
+    - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
@@ -341,12 +341,12 @@ tempo:
         cpu: 130m
         memory: 256Mi
     extraEnv:
-    - name: S3_ACCESS_KEY
+    - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
           key: rootUser
-    - name: S3_SECRET_KEY
+    - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
@@ -361,12 +361,12 @@ tempo:
         cpu: 100m
         memory: 128Mi
     extraEnv:
-    - name: S3_ACCESS_KEY
+    - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
           key: rootUser
-    - name: S3_SECRET_KEY
+    - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
@@ -381,12 +381,12 @@ tempo:
         cpu: 100m
         memory: 128Mi
     extraEnv:
-    - name: S3_ACCESS_KEY
+    - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
           key: rootUser
-    - name: S3_SECRET_KEY
+    - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
@@ -425,12 +425,12 @@ tempo:
         cpu: 120m
         memory: 128Mi
     extraEnv:
-    - name: S3_ACCESS_KEY
+    - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
           key: rootUser
-    - name: S3_SECRET_KEY
+    - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
           name: lgtm-minio
