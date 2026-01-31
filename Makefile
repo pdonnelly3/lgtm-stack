@@ -48,6 +48,15 @@ check-prereqs:
         echo "❌ Helm v3+ is required" ; \
         exit 1 ; \
 	fi
+	@echo "Checking Kubernetes cluster connectivity..."
+	@if ! kubectl cluster-info >/dev/null 2>&1; then \
+		echo "❌ Cannot connect to Kubernetes cluster" ; \
+		echo "   Make sure your cluster is running and KUBECONFIG is set" ; \
+		echo "   Run: export KUBECONFIG=~/.kube/config" ; \
+		exit 1 ; \
+	else \
+		echo "✅ Kubernetes cluster reachable" ; \
+	fi
 	@echo "✅ All prerequisites met!"
 
 setup-repos: check-prereqs
