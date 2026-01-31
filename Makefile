@@ -18,13 +18,13 @@ HELM_VERSION := $(shell helm version --short 2>/dev/null)
 KUBECTL_VERSION := $(shell kubectl version --client --short 2>/dev/null)
 
 ##@ General
-help: 
+help:
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} \
 		/^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } \
 		/^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) }' $(MAKEFILE_LIST)
 
 ##@ Installation
-install: check-deps 
+install: check-deps
 	@echo "$(BLUE)Installing LGTM stack for $(ENV) environment...$(RESET)"
 	@if [ "$(ENV)" = "gcp" ]; then \
 		make install-gcp; \
@@ -60,10 +60,10 @@ setup-repos: check-prereqs
 
 install-local: setup-repos ## Install LGTM stack for local development
 	@echo "$(BLUE)Installing LGTM stack locally...$(RESET)"
-	helm install prometheus-operator --version 66.3.1 -n monitoring \
-		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml >/dev/null 
-	helm install lgtm --version 2.1.0 -n monitoring \
-		grafana/lgtm-distributed -f helm/values-lgtm.local.yaml >/dev/null 
+	helm install prometheus-operator --version 81.3.1 -n monitoring \
+		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml >/dev/null
+	helm install lgtm --version 3.0.1 -n monitoring \
+		grafana/lgtm-distributed -f helm/values-lgtm.local.yaml >/dev/null
 	@make install-deps
 	@echo "$(GREEN)LGTM stack installed successfully for local environment!$(RESET)"
 	@echo "$(YELLOW)Waiting for Grafana secret to be ready...$(RESET)"
@@ -96,10 +96,10 @@ install-gcp: setup-repos check-gcp ## Install LGTM stack in GCP
 	@gcloud iam service-accounts keys create key.json \
 		--iam-account lgtm-monitoring@$(PROJECT_ID).iam.gserviceaccount.com
 	kubectl create secret generic lgtm-sa --from-file=key.json -n monitoring
-	helm install prometheus-operator --version 66.3.1 -n monitoring \
-		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml >/dev/null 
-	helm install lgtm --version 2.1.0 -n monitoring \
-		grafana/lgtm-distributed -f helm/values-lgtm.gcp.yaml >/dev/null 
+	helm install prometheus-operator --version 81.3.1 -n monitoring \
+		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml >/dev/null
+	helm install lgtm --version 3.0.1 -n monitoring \
+		grafana/lgtm-distributed -f helm/values-lgtm.gcp.yaml >/dev/null
 	@make install-deps
 	@echo "$(GREEN)LGTM stack installed successfully in GCP!$(RESET)"
 	@echo "$(YELLOW)Run 'kubectl port-forward svc/lgtm-grafana 3000:80 -n monitoring' to access Grafana$(RESET)"
