@@ -128,6 +128,23 @@ install-deps: ## Install dependencies (promtail & dashboards)
 	fi
 	@echo "✅ Dependencies installed"
 
+##@ Upgrade
+upgrade-local: ## Upgrade LGTM stack for local development
+	@echo "$(BLUE)Upgrading LGTM stack locally...$(RESET)"
+	helm upgrade prometheus-operator --version 81.3.1 -n monitoring \
+		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml
+	helm upgrade lgtm --version 3.0.1 -n monitoring \
+		grafana/lgtm-distributed -f helm/values-lgtm.local.yaml
+	@echo "$(GREEN)LGTM stack upgraded successfully!$(RESET)"
+
+upgrade-gcp: check-gcp ## Upgrade LGTM stack in GCP
+	@echo "$(BLUE)Upgrading LGTM stack on GCP...$(RESET)"
+	helm upgrade prometheus-operator --version 81.3.1 -n monitoring \
+		prometheus-community/kube-prometheus-stack -f helm/values-prometheus.yaml
+	helm upgrade lgtm --version 3.0.1 -n monitoring \
+		grafana/lgtm-distributed -f helm/values-lgtm.gcp.yaml
+	@echo "$(GREEN)LGTM stack upgraded successfully!$(RESET)"
+
 ##@ Validation
 check-deps: ## Check if required tools are installed
 	@echo "$(BLUE)Checking dependencies...$(RESET)"
