@@ -1,0 +1,32 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: arc-runners
+  namespace: arc-runners  # Change to your ARC namespace
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      actions.github.com/scale-set-name: ""  # Will match any scale set
+  podMetricsEndpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: arc-controller
+  namespace: arc-systems  # ARC controller namespace
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gha-runner-scale-set-controller
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

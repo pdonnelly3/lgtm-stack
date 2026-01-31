@@ -1,0 +1,93 @@
+# Example Helm values for GitHub Actions Runner Controller (ARC)
+# with monitoring enabled for LGTM stack integration
+
+## For ARC Controller (gha-runner-scale-set-controller)
+## Install with: helm install arc oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller \
+##   --namespace arc-systems --create-namespace --values values-arc-controller.yaml
+
+# values-arc-controller.yaml
+---
+# Enable metrics endpoint for the controller
+metrics:
+  enabled: true
+  port: 8080
+
+# Add Prometheus annotations for auto-discovery
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+  prometheus.io/path: "/metrics"
+
+# Add labels for PodMonitor/ServiceMonitor selection
+podLabels:
+  monitoring: "enabled"
+
+# Resource requests/limits for monitoring resource usage
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+---
+## For ARC Runner Scale Set
+## Install with: helm install arc-runner-set oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
+##   --namespace arc-runners --create-namespace --values values-arc-runners.yaml
+
+# values-arc-runners.yaml
+---
+githubConfigUrl: "https://github.com/your-org/your-repo"  # Change this
+githubConfigSecret: github-token  # Your GitHub PAT secret
+
+# Runner scale set configuration
+minRunners: 1
+maxRunners: 10
+
+# Runner pod configuration with monitoring labels
+template:
+  metadata:
+    labels:
+      app: github-runner
+      monitoring: "enabled"
+      # ARC automatically adds: actions.github.com/scale-set-name
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8080"
+      prometheus.io/path: "/metrics"
+  spec:
+    containers:
+    - name: runner
+      image: ghcr.io/actions/actions-runner:latest
+      env:
+      - name: ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT
+        value: "true"  # Important: Ensures Promtail can collect logs
+      # Add any custom environment variables
+      resources:
+        limits:
+          cpu: "2"
+          memory: 4Gi
+        requests:
+          cpu: "1"
+          memory: 2Gi
+      # If your runner image exposes metrics (custom setup)
+      ports:
+      - name: metrics
+        containerPort: 8080
+        protocol: TCP
+
+# Service configuration (if needed for ServiceMonitor)
+service:
+  enabled: true
+  type: ClusterIP
+  ports:
+  - name: metrics
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+
+# Controller service account with proper RBAC
+controllerServiceAccount:
+  name: arc-controller
+  annotations: {}
