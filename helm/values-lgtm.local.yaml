@@ -285,6 +285,8 @@ mimir:
   minio:
     enabled: true
     existingSecret: lgtm-minio
+    existingSecretAccessKeyIDKey: rootUser
+    existingSecretSecretAccessKeyKey: rootPassword
     replicas: 1
     resources:
       requests:
