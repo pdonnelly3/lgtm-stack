@@ -80,7 +80,7 @@ loki:
         memory: 128Mi
       limits:
         cpu: 200m
-        memory: 512Mi
+        memory: 640Mi
   querier:
     replicas: 1
     resources:
@@ -197,7 +197,7 @@ mimir:
         memory: 256Mi
       limits:
         cpu: 200m
-        memory: 512Mi
+        memory: 640Mi
   overrides_exporter:
     resources:
       requests:
@@ -259,11 +259,11 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 50m
-        memory: 256Mi
+        cpu: 75m
+        memory: 384Mi
       limits:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 250m
+        memory: 896Mi
     buckets:
     - name: mimir-tsdb
       policy: none
@@ -308,7 +308,7 @@ tempo:
         memory: 128Mi
       limits:
         cpu: 200m
-        memory: 256Mi
+        memory: 384Mi
   querier:
     replicas: 1
     resources:
@@ -316,7 +316,7 @@ tempo:
         cpu: 30m
         memory: 128Mi
       limits:
-        cpu: 150m
+        cpu: 130m
         memory: 256Mi
   queryFrontend:
     replicas: 1
@@ -369,7 +369,7 @@ tempo:
         cpu: 30m
         memory: 64Mi
       limits:
-        cpu: 150m
+        cpu: 120m
         memory: 128Mi
     config:
       storage:

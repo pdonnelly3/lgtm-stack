@@ -7,11 +7,11 @@ prometheus:
     scrapeInterval: "120s"
     resources:
       requests:
-        cpu: 100m
-        memory: 512Mi
+        cpu: 150m
+        memory: 896Mi
       limits:
-        cpu: 500m
-        memory: 1Gi
+        cpu: 600m
+        memory: 1792Mi
     remoteWrite:
     - url:  http://lgtm-mimir-nginx:80/api/v1/push
     externalLabels:
@@ -35,29 +35,6 @@ kubeScheduler:
   enabled: false
 kubeControllerManager:
   enabled: false
-kubeEtcd:
-  enabled: false
-kubeProxy:
-  enabled: false
-
-# Reduce node-exporter and kube-state-metrics resources
-prometheus-node-exporter:
-  resources:
-    requests:
-      cpu: 10m
-      memory: 32Mi
-    limits:
-      cpu: 50m
-      memory: 64Mi
-
-kube-state-metrics:
-  resources:
-    requests:
-      cpu: 20m
-      memory: 64Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
 
 grafana:
   enabled: false
