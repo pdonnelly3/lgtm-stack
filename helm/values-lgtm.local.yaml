@@ -284,9 +284,8 @@ mimir:
         memory: 64Mi
   minio:
     enabled: true
-    existingSecret: lgtm-minio
-    existingSecretAccessKeyIDKey: rootUser
-    existingSecretSecretAccessKeyKey: rootPassword
+    accessKey: lgtm
+    secretKey: supersecret
     replicas: 1
     resources:
       requests:
