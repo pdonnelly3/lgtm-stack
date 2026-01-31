@@ -69,13 +69,13 @@ Well within the 8GB target.
 
 ## Important Notes
 
-1. **Limits vs Requests**: 
+1. **Limits vs Requests**:
    - **Requests** are guaranteed resources - total is ~1 CPU and ~3.2GB RAM
    - **Limits** are maximum burst capacity - pods can use up to these values if available
 
 2. **Disabled Components** to save resources:
    - Mimir Ruler
-   - Mimir Alertmanager  
+   - Mimir Alertmanager
    - Mimir Rollout Operator
    - Various cache components
 
