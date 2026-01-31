@@ -148,18 +148,6 @@ loki:
 mimir:
   # -- Deploy Mimir if enabled. See [upstream values.yaml](https://github.com/grafana/mimir/blob/main/operations/helm/charts/mimir-distributed/values.yaml) for full values reference.
   enabled: true
-  global:
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
   server:
       grpc_server_max_concurrent_streams: 1000
       grpc_server_max_recv_msg_size: 104857600
@@ -284,8 +272,8 @@ mimir:
         memory: 64Mi
   minio:
     enabled: true
-    accessKey: lgtm
-    secretKey: supersecret
+    rootPassword: supersecret
+    rootUser: lgtm
     replicas: 1
     resources:
       requests:
@@ -328,17 +316,6 @@ tempo:
       limits:
         cpu: 100m
         memory: 128Mi
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
   ingester:
     replicas: 1
     config:
@@ -350,17 +327,6 @@ tempo:
       limits:
         cpu: 200m
         memory: 384Mi
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
   querier:
     replicas: 1
     resources:
@@ -370,17 +336,6 @@ tempo:
       limits:
         cpu: 130m
         memory: 256Mi
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
   queryFrontend:
     replicas: 1
     resources:
@@ -390,17 +345,6 @@ tempo:
       limits:
         cpu: 100m
         memory: 128Mi
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
   compactor:
     replicas: 1
     resources:
@@ -410,17 +354,6 @@ tempo:
       limits:
         cpu: 100m
         memory: 128Mi
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
   metaMonitoring:
     serviceMonitor:
       enabled: true
@@ -438,6 +371,8 @@ tempo:
         prefix: traces
         endpoint: lgtm-minio:9000
         insecure: true
+        access_key: lgtm
+        secret_key: supersecret
   traces:
     otlp:
       grpc:
@@ -454,17 +389,6 @@ tempo:
       limits:
         cpu: 120m
         memory: 128Mi
-    extraEnv:
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootUser
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: lgtm-minio
-          key: rootPassword
     config:
       storage:
         remote_write:
