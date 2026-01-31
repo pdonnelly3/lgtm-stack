@@ -76,7 +76,7 @@ spec:
           value: "2GiB"
         resources:
           requests:
-            cpu: 75m
+            cpu: 150m
             memory: 384Mi
           limits:
             cpu: 350m

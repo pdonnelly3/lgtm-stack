@@ -5,8 +5,8 @@ grafana:
   replicas: 1
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 100m
+      memory: 160Mi
     limits:
       cpu: 200m
       memory: 256Mi
@@ -15,7 +15,7 @@ grafana:
       enabled: true
       resources:
         requests:
-          cpu: 10m
+          cpu: 30m
           memory: 32Mi
         limits:
           cpu: 50m
@@ -58,7 +58,7 @@ loki:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 60m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -67,7 +67,7 @@ loki:
     replicas: 1
     resources:
       requests:
-        cpu: 10m
+        cpu: 25m
         memory: 32Mi
       limits:
         cpu: 50m
@@ -76,8 +76,8 @@ loki:
     replicas: 1
     resources:
       requests:
-        cpu: 50m
-        memory: 128Mi
+        cpu: 100m
+        memory: 192Mi
       limits:
         cpu: 200m
         memory: 640Mi
@@ -85,8 +85,8 @@ loki:
     replicas: 1
     resources:
       requests:
-        cpu: 30m
-        memory: 128Mi
+        cpu: 80m
+        memory: 160Mi
       limits:
         cpu: 150m
         memory: 256Mi
@@ -94,7 +94,7 @@ loki:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 50m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -103,7 +103,7 @@ loki:
     enabled: true
     resources:
       requests:
-        cpu: 20m
+        cpu: 40m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -112,7 +112,7 @@ loki:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 40m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -173,7 +173,7 @@ mimir:
   compactor:
     resources:
       requests:
-        cpu: 20m
+        cpu: 40m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -182,7 +182,7 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 60m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -193,15 +193,15 @@ mimir:
       enabled: false
     resources:
       requests:
-        cpu: 50m
-        memory: 256Mi
+        cpu: 150m
+        memory: 384Mi
       limits:
         cpu: 200m
         memory: 640Mi
   overrides_exporter:
     resources:
       requests:
-        cpu: 10m
+        cpu: 25m
         memory: 32Mi
       limits:
         cpu: 50m
@@ -210,8 +210,8 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 30m
-        memory: 128Mi
+        cpu: 100m
+        memory: 160Mi
       limits:
         cpu: 150m
         memory: 256Mi
@@ -219,7 +219,7 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 50m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -228,7 +228,7 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 10m
+        cpu: 25m
         memory: 32Mi
       limits:
         cpu: 50m
@@ -239,7 +239,7 @@ mimir:
       enabled: false
     resources:
       requests:
-        cpu: 20m
+        cpu: 40m
         memory: 128Mi
       limits:
         cpu: 100m
@@ -248,7 +248,7 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 10m
+        cpu: 25m
         memory: 32Mi
       limits:
         cpu: 50m
@@ -259,7 +259,7 @@ mimir:
     replicas: 1
     resources:
       requests:
-        cpu: 75m
+        cpu: 150m
         memory: 384Mi
       limits:
         cpu: 250m
@@ -293,7 +293,7 @@ tempo:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 60m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -304,8 +304,8 @@ tempo:
       replication_factor: 1
     resources:
       requests:
-        cpu: 50m
-        memory: 128Mi
+        cpu: 100m
+        memory: 192Mi
       limits:
         cpu: 200m
         memory: 384Mi
@@ -313,8 +313,8 @@ tempo:
     replicas: 1
     resources:
       requests:
-        cpu: 30m
-        memory: 128Mi
+        cpu: 80m
+        memory: 160Mi
       limits:
         cpu: 130m
         memory: 256Mi
@@ -322,7 +322,7 @@ tempo:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 50m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -331,7 +331,7 @@ tempo:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 40m
         memory: 64Mi
       limits:
         cpu: 100m
@@ -366,7 +366,7 @@ tempo:
     replicas: 1
     resources:
       requests:
-        cpu: 30m
+        cpu: 60m
         memory: 64Mi
       limits:
         cpu: 120m
