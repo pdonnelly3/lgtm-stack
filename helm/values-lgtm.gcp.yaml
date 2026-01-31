@@ -13,7 +13,7 @@ grafana:
   #grafana.ini:
   #  server:
   #    root_url: https://hostname-here.com # change this
-  
+
   resources:
     requests:
       cpu: 100m
@@ -45,7 +45,7 @@ grafana:
         - name: Tempo
           uid: tempo
           type: tempo
-          url: http://{{ .Release.Name }}-tempo-query-frontend:3100
+          url: http://{{ .Release.Name }}-tempo-query-frontend:3200
           isDefault: false
           jsonData:
             tracesToLogsV2:
@@ -79,8 +79,8 @@ loki:
     structuredConfig:
       limits_config:
         max_global_streams_per_user: 5000
-        max_query_length: 0h 
-        max_query_parallelism: 32 
+        max_query_length: 0h
+        max_query_parallelism: 32
         max_streams_per_user: 0
         enforce_metric_name: false
         max_cache_freshness_per_query: 10m
@@ -112,43 +112,43 @@ loki:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
 
   ingester:
    persistentVolume:
       size: 30Gi
    maxUnavailable: 1
    replicas: 2
-   resources: 
+   resources:
      requests:
        cpu: 20m
        memory: 500Mi
-  
+
    extraVolumes:
    - name: lgtm-sa-volume
      secret:
-        secretName: lgtm-sa 
-   extraVolumeMounts: 
-   - name: lgtm-sa-volume 
+        secretName: lgtm-sa
+   extraVolumeMounts:
+   - name: lgtm-sa-volume
      mountPath: /etc/secrets
    extraEnv:
    - name: GOOGLE_APPLICATION_CREDENTIALS
      value: /etc/secrets/key.json
-  
+
   queryFrontend:
     replicas: 1
     resources:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
   querier:
     replicas: 1
     resources:
       requests:
         cpu: 20m
         memory: 1Gi
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -169,7 +169,7 @@ loki:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -187,13 +187,13 @@ loki:
 
   memcachedFrontend:
     enabled: false
-  
+
   memcachedIndexQueries:
     enabled: false
-  
+
   memcachedIndexWrites:
     enabled: false
-    
+
   serviceMonitor:
     enabled: true
     labels:
@@ -203,7 +203,7 @@ loki:
     enabled: true
     labels:
       release: prometheus-operator
-   
+
 
 # -- Mimir chart values. Resources are set to a minimum by default.
 mimir:
@@ -249,7 +249,7 @@ mimir:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
 
   ingester:
     persistentVolume:
@@ -269,7 +269,7 @@ mimir:
       requests:
         cpu: 20m
         memory: 1Gi
-    
+
     zoneAwareReplication:
       enabled: false
 
@@ -286,7 +286,7 @@ mimir:
       mimirRules: true
       labels:
         release: prometheus-operator
-    
+
 
   alertmanager:
     enabled: false
@@ -306,13 +306,13 @@ mimir:
         memory: 2Gi
       requests:
         memory: 500Mi
-    
+
 
   overrides_exporter:
     resources:
       requests:
         cpu: 20m
-    
+
 
   querier:
     replicas: 2
@@ -322,7 +322,7 @@ mimir:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -339,20 +339,20 @@ mimir:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
 
   query_scheduler:
     replicas: 1
     resources:
       requests:
         cpu: 20m
-    
+
 
   ruler:
     resources:
       requests:
         cpu: 20m
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -373,7 +373,7 @@ mimir:
     resources:
         requests:
           cpu: 20m
-    
+
     zoneAwareReplication:
       enabled: false
 
@@ -384,7 +384,7 @@ mimir:
     resources:
       requests:
         cpu: 20m
-    
+
   # enable for better performance
   chunks-cache:
     enabled: false
@@ -414,9 +414,9 @@ tempo:
       labels:
         release: prometheus-operator
   storage:
-    trace: 
+    trace:
       backend: gcs
-      gcs: 
+      gcs:
         bucket_name: lgtm-traces
         prefix: traces
         endpoint: https://storage.googleapis.com/storage/v1/
@@ -426,7 +426,7 @@ tempo:
     resources:
       requests:
         cpu: 20m
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -440,13 +440,13 @@ tempo:
 
   ingester:
     replicas: 1
-    config: 
+    config:
       replication_factor: 1
     resources:
       requests:
         cpu: 20m
         memory: 500Mi
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -464,7 +464,7 @@ tempo:
       requests:
         cpu: 20m
         memory: 1Gi
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -485,7 +485,7 @@ tempo:
     #config:
     #  compaction:
     #     block_retention: 720h
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -503,8 +503,8 @@ tempo:
       requests:
         cpu: 20m
         memory: 500Mi
-    
-        
+
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
@@ -522,11 +522,11 @@ tempo:
         enabled: true
       http:
         enabled: true
-    
+
   # Enable service graph generation
   metricsGenerator:
     enabled: true
-    
+
     extraVolumes:
     - name: lgtm-sa-volume
       secret:
