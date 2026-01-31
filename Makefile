@@ -107,6 +107,8 @@ install-gcp: setup-repos check-gcp ## Install LGTM stack in GCP
 
 install-deps: ## Install dependencies (promtail & dashboards)
 	@echo "$(BLUE)Installing dependencies...$(RESET)"
+	@echo "$(BLUE)Creating MinIO secret...$(RESET)"
+	kubectl apply -f manifests/minio-secret.yaml
 	@echo "$(BLUE)Installing Promtail for $(RUNTIME) runtime...$(RESET)"
 	@if [ "$(RUNTIME)" = "cri" ]; then \
 		kubectl apply -f manifests/promtail.cri.yaml ; \
@@ -137,6 +139,7 @@ uninstall: ## Uninstall LGTM stack and dependencies
 	helm uninstall prometheus-operator -n monitoring || true
 	kubectl delete -f manifests/promtail.yaml || true
 	kubectl delete -f manifests/otel-collector.yaml || true
+	kubectl delete -f manifests/minio-secret.yaml || true
 	kubectl delete ns monitoring || true
 
 	@if [ "$(ENV)" = "gcp" ]; then \

@@ -2,9 +2,24 @@
 grafana:
   # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
   enabled: true
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
   sidecar:
     dashboards:
       enabled: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 50m
+          memory: 64Mi
   datasources:
     datasources.yaml:
       apiVersion: 1
@@ -39,6 +54,69 @@ loki:
   enabled: true
   commonConfig:
     replication_factor: 1
+  distributor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  gateway:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 50m
+        memory: 64Mi
+  ingester:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 30m
+        memory: 128Mi
+      limits:
+        cpu: 150m
+        memory: 256Mi
+  queryFrontend:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  compactor:
+    enabled: true
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  indexGateway:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   loki:
     server:
       grpc_server_max_recv_msg_size: 104857600
@@ -63,8 +141,8 @@ loki:
         s3forcepathstyle: true
         endpoint: lgtm-minio:9000
         insecure: true
-    
-   
+
+
 
 # -- Mimir chart values. Resources are set to a minimum by default.
 mimir:
@@ -96,46 +174,96 @@ mimir:
     resources:
       requests:
         cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   distributor:
+    replicas: 1
     resources:
       requests:
         cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   ingester:
-    replicas: 2
+    replicas: 1
     zoneAwareReplication:
       enabled: false
     resources:
       requests:
-        cpu: 20m
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
   overrides_exporter:
     resources:
       requests:
-        cpu: 20m
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 50m
+        memory: 64Mi
   querier:
     replicas: 1
     resources:
       requests:
-        cpu: 20m
+        cpu: 30m
+        memory: 128Mi
+      limits:
+        cpu: 150m
+        memory: 256Mi
   query_frontend:
-    resources:
-      requests:
-        cpu: 20m
-  query_scheduler:
     replicas: 1
     resources:
       requests:
         cpu: 20m
-  
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  query_scheduler:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 50m
+        memory: 64Mi
   store_gateway:
+    replicas: 1
     zoneAwareReplication:
       enabled: false
     resources:
       requests:
         cpu: 20m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 256Mi
+  nginx:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 50m
+        memory: 64Mi
   minio:
     enabled: true
-    rootPassword: supersecret
-    rootUser: lgtm
+    existingSecret: lgtm-minio-credentials
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
     buckets:
     - name: mimir-tsdb
       policy: none
@@ -150,19 +278,64 @@ mimir:
       policy: none
       purge: false
   rollout_operator:
-    resources:
-      requests:
-        cpu: 20m
-        
-  # optional
+    enabled: false
+
+  # optional - disabled to save resources
   ruler:
-    enabled: true
+    enabled: false
   alertmanager:
     enabled: false
 
 tempo:
   # -- Deploy Tempo if enabled.  See [upstream readme](https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/README.md#values) for full values reference.
   enabled: true
+  distributor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  ingester:
+    replicas: 1
+    config:
+      replication_factor: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 30m
+        memory: 128Mi
+      limits:
+        cpu: 150m
+        memory: 256Mi
+  queryFrontend:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  compactor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   metaMonitoring:
     serviceMonitor:
       enabled: true
@@ -173,19 +346,15 @@ tempo:
       labels:
         release: prometheus-operator
   storage:
-    trace: 
+    trace:
       backend: s3
-      s3: 
+      s3:
         access_key: lgtm
         bucket: tempo
         prefix: traces
         endpoint: lgtm-minio:9000
         insecure: true
         secret_key: supersecret
-  ingester:
-    replicas: 1
-    config: 
-      replication_factor: 1
   traces:
     otlp:
       grpc:
@@ -194,6 +363,14 @@ tempo:
         enabled: true
   metricsGenerator:
     enabled: true
+    replicas: 1
+    resources:
+      requests:
+        cpu: 30m
+        memory: 64Mi
+      limits:
+        cpu: 150m
+        memory: 128Mi
     config:
       storage:
         remote_write:
@@ -205,3 +382,4 @@ tempo:
         processors:
           - service-graphs
           - span-metrics
+

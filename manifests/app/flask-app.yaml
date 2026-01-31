@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: flask-app
+  namespace: default
 spec:
   selector:
     app: flask-app
@@ -14,6 +15,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flask-app
+  namespace: default
   labels:
     app: flask-app
 spec:
@@ -26,17 +28,50 @@ spec:
       labels:
         app: flask-app
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
       containers:
       - name: flask-app
-        image: david13356/flask-app-lgtm:latest
+        image: david13356/flask-app-lgtm:v1.0.0
         imagePullPolicy: Always
         env:
         - name: PORT
           value: "8000"
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: "http://otel-collector:4318"
+          value: "http://otel-collector.monitoring:4318"
         ports:
           - containerPort: 8000
             protocol: TCP
           - containerPort: 8888
             protocol: TCP
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        livenessProbe:
+          httpGet:
+            path: /random
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /random
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: false
